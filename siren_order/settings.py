@@ -25,7 +25,7 @@ SECRET_KEY = '^6$&qj#s81a^pc*5&_p#!6__c3qw*ndn0l_ne_&tar9xjg9d@&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,6 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'supplier',
+    'customer',
+    'product',
+    'address',
 ]
 
 MIDDLEWARE = [
@@ -75,8 +79,12 @@ WSGI_APPLICATION = 'siren_order.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE'   : 'mysql.connector.django',
+        'NAME'     : 'siren_database',
+        'USER'     : 'root',
+        'PASSWORD' : 'root',
+        'HOST'     : 'localhost',   # Or an IP Address that your DB is hosted on
+        'PORT'     : '3306',
     }
 }
 
