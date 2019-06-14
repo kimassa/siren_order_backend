@@ -31,22 +31,14 @@ class SupplierLocationView(View):
         suppliers_list = list(suppliers)
         address = Address.objects.filter(supplier__in=suppliers).select_related()
         address_list = list(address)
-
-        dictionary = dict(zip(suppliers_list, address_list))
-
-        cities = {
-            'vienna': (48.2083537, 16.3725042),
-            'berlin': (52.5170365, 13.3888599),
-            'sydney': (-33.8548157, 151.2164539),
-            'madrid': (40.4167047, -3.7035825)
-            }
+        supplier_address = dict(zip(suppliers_list, address_list))
 
         latitude = request.GET['lat']
         longitude = request.GET['lon']
         current_coord = (latitude, longitude)
         distance_list = []
 
-        for shop, address in dictionary.items():
+        for shop, address in supplier_address.items():
             longitude = address.longitude
             latitude = address.latitude
             coord = (longitude, latitude)
