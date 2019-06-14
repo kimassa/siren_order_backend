@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import my_settings
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -78,16 +80,18 @@ WSGI_APPLICATION = 'siren_order.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE'   : 'mysql.connector.django',
-        'NAME'     : 'siren_database',
-        'USER'     : 'root',
-        'PASSWORD' : 'root',
-        'HOST'     : 'localhost',   # Or an IP Address that your DB is hosted on
-        'PORT'     : '3306',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE'   : 'mysql.connector.django',
+#         'NAME'     : 'siren_database',
+#         'USER'     : 'root',
+#         'PASSWORD' : 'root',
+#         'HOST'     : 'localhost',   # Or an IP Address that your DB is hosted on
+#         'PORT'     : '3306',
+#     }
+# }
+
+DATABASES = my_settings.DATABASES
 
 
 # Password validation
