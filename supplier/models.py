@@ -8,3 +8,6 @@ class Supplier(models.Model):
 
     class Meta:
         db_table='suppliers'
+
+    def __str__(self):
+        return self.name
