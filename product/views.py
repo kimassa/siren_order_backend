@@ -9,7 +9,6 @@ class AllProductView(View):
     
     def get(self, request):
         data = Product.objects.all().values()
-        print(data)
         data_list = list(data)
 
         data_json = [ {
