@@ -1,10 +1,15 @@
 from django.db import models
-from address.models import Address
 
 class Supplier(models.Model):
-    name = models.CharField(max_length=40)
-    address = models.ForeignKey(Address, on_delete=models.CASCADE)
-    phone = models.CharField(max_length=40)
+    name = models.CharField(max_length=20)
+    branch = models.CharField(max_length=50)
+    state = models.CharField(max_length=40)
+    city = models.CharField(max_length=40)
+    address = models.CharField(max_length=200)
+    zipcode = models.CharField(max_length=20)
+    longitude = models.CharField(max_length=20)
+    latitude = models.CharField(max_length=20)
+    phone = models.CharField(max_length=40, blank=True)
 
     class Meta:
         db_table='suppliers'
