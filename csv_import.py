@@ -16,15 +16,22 @@ else:
                          db= db_default.get('NAME'))
 
 cursor = db.cursor()
-cursor.execute(f"DELETE FROM suppliers")
+# cursor.execute(f"DELETE FROM suppliers")
 
 with open('sb_new.csv', encoding='utf-8-sig') as csv_files:
     reader = csv.DictReader(csv_files)
 
     for row in reader:
-        print(row)
+        print(f"--{row['kim']}")
+        print(f"--{row['branch']}")
+        print(f"--{row['state']}")
+        print(f"--{row['city']}")
+        print(f"--{row['address']}")
+        print(f"--{row['zipcode']}")
+        print(f"--{row['longitude']}")
+        print(f"--{row['latitude']}")
+        print(f"--{row['phone']}")
 
-        
         sql = f"""INSERT INTO suppliers (
             name,
             branch,
@@ -36,18 +43,18 @@ with open('sb_new.csv', encoding='utf-8-sig') as csv_files:
             latitude,
             phone
         ) VALUES (
-            {row['kim']},
-            {row['branch']},
-            {row['state']},
-            {row['city']},
-            {row['address']},
-            {row['zipcode']},
-            {row['longitude']},
-            {row['latitude']},
-            {row['phone']}
-            )"""
+            %(kim)s,
+            %(branch)s,
+            %(state)s,
+            %(city)s,
+            %(address)s,
+            %(zipcode)s,
+            %(longitude)s,
+            %(latitude)s,
+            %(phone)s
+        )"""
 
-        cursor.execute(sql)
+        cursor.execute(sql, row)
 
 
 db.commit()
