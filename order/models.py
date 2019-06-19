@@ -31,12 +31,13 @@ class Order(models.Model):
     takeout = models.CharField(max_length=10, choices=TAKEOUT_CHOICES)
     date = models.DateTimeField()
 
-
     class Meta:
         db_table='orders'
+        verbose_name='주문'
+        verbose_name_plural='주문'
     
-    # def __str__(self):
-        # return self.total_price
+    def __str__(self):
+        return f"{self.customer} {self.total_price}"
 
 
 class OrderProduct(models.Model):
@@ -48,5 +49,5 @@ class OrderProduct(models.Model):
     class Meta:
         db_table='orders_products'
     
-    # def __str__(self):
-        # return self.id
+    def __str__(self):
+        return f"{self.id} {self.product} {self.quantity}"

@@ -11,7 +11,6 @@ from operator import itemgetter, attrgetter
 class SupplierView(View):
     def get(self, request):
             data = Supplier.objects.all().values()
-            data_list = list(data)
 
             data_json = [ {
                 'name' : d['name'],
@@ -21,45 +20,32 @@ class SupplierView(View):
                 'phone' : d['phone'],
                 'latitude': d['latitude'],
                 'longitude' : d['longitude']
-            } for d in data_list ]
+            } for d in data.iterator() ]
 
             return JsonResponse(data_json, safe=False)
 
-
+            
 class SupplierLocationView(View):
 
     def get(self, request):
 
         suppliers = Supplier.objects.all().values()
-        suppliers_list = list(suppliers)
+        # suppliers_list = list(suppliers)
         latitude = request.GET['lat']
         longitude = request.GET['lon']
-        current_coord = (latitude, longitude)
-        distance_list = []
-        print(suppliers)
-        print(suppliers_list)
+        current_coord = (latitude, longitude)    
 
-        for supplier in suppliers_list:
-            # address = supplier.address
-            longitude = supplier['longitude']
-            latitude = supplier['latitude']
-            coord = (latitude, longitude)
-            branch_name = supplier['branch']
-            distance_result = distance(current_coord, coord).m
+        data_json = [ {
+            'distance' : distance(current_coord, (d['latitude'], d['longitude'])).m,
+            'name' : d['name'],
+            'branch' : d['branch'],
+            'address' : d['address'],
+            'zipcode' : d['zipcode'],
+            'phone' : d['phone'],
+            'latitude': d['latitude'],
+            'longitude' : d['longitude'],
+        } for d in suppliers.iterator() ]
 
-            result = distance_list.append((branch_name, distance_result))
-            # print(result)
+        sorted_list = sorted(data_json, key = lambda i: i['distance'])
 
-            data_json = [ {
-                'name' : d['name'],
-                'branch' : d['branch'],
-                'address' : d['address'],
-                'zipcode' : d['zipcode'],
-                'phone' : d['phone'],
-                'distance' : distance_result,
-                'latitude': d['latitude'],
-                'longitude' : d['longitude']
-            } for d in suppliers_list ]
-
-        sorted_list = sorted(distance_list, key=lambda d: d[1])
-        return JsonResponse(data_json, safe=False)
+        return JsonResponse(sorted_list, safe=False)

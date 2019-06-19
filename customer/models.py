@@ -6,7 +6,7 @@ class Customer(models.Model):
       name = models.CharField(max_length=100)
       email = models.CharField(max_length=100)
       phone = models.CharField(max_length=40)
-      detail = models.CharField(max_length=200, blank=True)
+      password = models.CharField(max_length=200)
 
       class Meta:
           db_table='customers'
