@@ -8,7 +8,7 @@ def login_required(f):
     def wrapper(self, request, *args, **kwargs):
         access_token = request.headers.get('Authorization', None)
         try:                   
-            if access_token:   
+            if access_token:
                 decoded = jwt.decode(access_token, siren_secret, algorithms=['HS256'])
                 customer_id = decoded["id"]    
                 customer = Customer.objects.get(id=customer_id)
@@ -26,7 +26,7 @@ def login_decorator_pass(f):
 
         try:                   
             if access_token:   
-                decoded = jwt.decode(access_token, wit_secret, algorithms=['HS256'])
+                decoded = jwt.decode(access_token, siren_secret, algorithms=['HS256'])
                 user_id = decoded["user_id"]    
                 customer = Customer.objects.get(id=user_id)
                 request.user = customer             

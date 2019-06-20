@@ -1,4 +1,6 @@
 from django.db import models
+from customer.models import Customer
+
 
 class Product(models.Model):
       DRINK = 'DR'
@@ -36,6 +38,7 @@ class Product(models.Model):
       price = models.CharField(max_length=50)
       drink_size = models.CharField(max_length=10, choices=SIZE_CHOICES, null=True, blank=True)
       detail = models.CharField(max_length=100, null=True, blank=True)
+      favorite = models.ManyToManyField(Customer, related_name='Product_favorite', blank=True)
 
       class Meta:
           db_table='products'
