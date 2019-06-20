@@ -10,9 +10,27 @@ from operator import itemgetter, attrgetter
 
 class SupplierView(View):
     def get(self, request):
-            data = Supplier.objects.all().values()
 
-            data_json = [ {
+        data = Supplier.objects.all().values()
+        data_json = [ {
+            'name' : d['name'],
+            'branch' : d['branch'],
+            'address' : d['address'],
+            'zipcode' : d['zipcode'],
+            'phone' : d['phone'],
+            'latitude': d['latitude'],
+            'longitude' : d['longitude']
+        } for d in data.iterator() ]
+        
+        return JsonResponse(data_json, safe=False)
+
+class SupplierDetailView(View):
+    def get(self, request, pk):
+
+        supplier = Supplier.objects.filter(id=pk)
+        supplier_list = list(supplier.values())
+              
+        data_json = [ {
                 'name' : d['name'],
                 'branch' : d['branch'],
                 'address' : d['address'],
@@ -20,13 +38,12 @@ class SupplierView(View):
                 'phone' : d['phone'],
                 'latitude': d['latitude'],
                 'longitude' : d['longitude']
-            } for d in data.iterator() ]
+            } for d in supplier_list
+        ]
+        
+        return JsonResponse(data_json, safe=False)            
 
-            return JsonResponse(data_json, safe=False)
-
-            
 class SupplierLocationView(View):
-
     def get(self, request):
 
         suppliers = Supplier.objects.all().values()
