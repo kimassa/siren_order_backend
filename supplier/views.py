@@ -3,9 +3,8 @@ from django.http import JsonResponse, HttpResponse
 from django.views import View
 from .models import Supplier
 from django.core import serializers
-import json
 from geopy.distance import distance
-from operator import itemgetter, attrgetter
+import json
 
 
 class SupplierView(View):
@@ -26,7 +25,6 @@ class SupplierView(View):
 
             
 class SupplierLocationView(View):
-
     def get(self, request):
 
         suppliers = Supplier.objects.all().values()

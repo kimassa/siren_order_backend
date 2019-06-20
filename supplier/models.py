@@ -1,4 +1,6 @@
 from django.db import models
+from customer.models import Customer
+
 
 class Supplier(models.Model):
     name = models.CharField(max_length=20)
@@ -10,6 +12,7 @@ class Supplier(models.Model):
     longitude = models.CharField(max_length=20)
     latitude = models.CharField(max_length=20)
     phone = models.CharField(max_length=40, blank=True)
+    favorite = models.ManyToManyField(Customer, related_name='favorite', blank=True)
 
     class Meta:
         db_table='suppliers'
