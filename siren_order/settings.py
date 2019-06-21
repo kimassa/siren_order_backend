@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     # 'debug_toolbar'
     'shell_plus',
     'supplier',
-    'customer',
+    'user',
     'product',
     'order',
 ]

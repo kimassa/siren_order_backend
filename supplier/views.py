@@ -2,8 +2,8 @@ from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse, HttpResponse
 from django.views import View
 from .models import Supplier
-from customer.utils import login_required
-from customer.models import Customer
+from user.utils import login_required
+from user.models import User
 from django.core import serializers
 from geopy.distance import distance
 import json
@@ -73,11 +73,11 @@ class SupplierFavoriteView(View):
     def post(self, request, pk):
 
         supplier = get_object_or_404(Supplier, id=pk)
-        customer = get_object_or_404(Customer, id=request.user.id)
+        user = get_object_or_404(User, id=request.user.id)
 
         if supplier.favorite.filter(id = request.user.id).exists():
-                supplier.favorite.remove(customer)
+                supplier.favorite.remove(user)
                 return JsonResponse({'message':'favorited'}, status=200)
         else :
-                supplier.favorite.add(customer)
+                supplier.favorite.add(user)
                 return JsonResponse({'message':'Unfavorited'}, status=200)

@@ -58,4 +58,28 @@ with open('sb_new.csv', encoding='utf-8-sig') as csv_files:
 
 
 db.commit()
+
+with open('sb_product.csv', encoding='utf-8-sig') as csv_files:
+    reader = csv.DictReader(csv_files)
+
+    for row in reader:
+
+        sql = f"""INSERT INTO products (
+            menu_type,
+            menu_category,
+            name,
+            drink_size,
+            drink_type,
+            price
+        ) VALUES (
+            %(menu_type)s,
+            %(menu_category)s,
+            %(name)s,
+            %(drink_size)s,
+            %(drink_type)s,
+            %(price)s
+        )"""
+        cursor.execute(sql, row)
+
+db.commit()
 db.close()

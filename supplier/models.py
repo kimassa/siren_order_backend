@@ -1,5 +1,5 @@
 from django.db import models
-from customer.models import Customer
+from user.models import User
 
 
 class Supplier(models.Model):
@@ -12,7 +12,7 @@ class Supplier(models.Model):
     longitude = models.CharField(max_length=20)
     latitude = models.CharField(max_length=20)
     phone = models.CharField(max_length=40, blank=True)
-    favorite = models.ManyToManyField(Customer, related_name='Supplier_favorite', blank=True)
+    favorite = models.ManyToManyField(User, related_name='Supplier_favorite', blank=True)
 
     class Meta:
         db_table='suppliers'

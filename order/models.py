@@ -1,5 +1,5 @@
 from django.db import models
-from customer.models import Customer
+from user.models import User
 from supplier.models import Supplier
 from product.models import Product
 
@@ -24,7 +24,7 @@ class Order(models.Model):
         (TAKE_OUT, 'Take Out'),
     ]
 
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=PAID)
     total_price = models.IntegerField()
     supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE)
@@ -37,7 +37,7 @@ class Order(models.Model):
         verbose_name_plural='주문'
     
     def __str__(self):
-        return f"{self.customer} {self.total_price}"
+        return f"{self.user} {self.total_price}"
 
 
 class OrderProduct(models.Model):
