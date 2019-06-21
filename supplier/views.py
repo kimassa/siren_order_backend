@@ -64,8 +64,9 @@ class SupplierLocationView(View):
         } for d in suppliers.iterator() ]
 
         sorted_list = sorted(data_json, key = lambda i: i['distance'])
-
-        return JsonResponse(sorted_list, safe=False)
+        first_ten_list = sorted_list[:10]
+        
+        return JsonResponse(first_ten_list, safe=False)
 
 class SupplierFavoriteView(View):
 

@@ -37,3 +37,20 @@ class OrderView(View):
             ).save()
 
         return JsonResponse({'success': True, 'message': 'your order has been placed'},status=200)
+
+class OrderReadyView(View):
+    @login_required
+    def get(self, request):
+        data = Order.objects.all().values()
+        supplier = Supplier.objects.filter(id=id).values('supplier')
+
+        data_json = [ {
+            # 'user' : request.user,
+            'status' : d['status'],
+            'total_price' : d['total_price'],
+            # 'supplier' : 
+            'takeout' : d['takeout'],
+            'date' : d['date'],
+        } for d in data.iterator()]
+
+        return JsonResponse(data_json, safe=False)
