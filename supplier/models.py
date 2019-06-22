@@ -18,4 +18,4 @@ class Supplier(models.Model):
         db_table='suppliers'
 
     def __str__(self):
-        return self.name
+        return self.branch

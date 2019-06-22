@@ -4,11 +4,11 @@ from supplier.models import Supplier
 from product.models import Product
 
 class Order(models.Model):
-    PAID = 'PA'
-    ORDER_SEND = 'OS'
-    ORDER_CONFIRMED = 'OF'
-    ORDER_CANCELED = 'OC'
-    PRODUCT_READY = 'PR'
+    PAID = 'PAID'
+    ORDER_SEND = 'ORDER_SEND'
+    ORDER_CONFIRMED = 'ORDER_CONFIRMED'
+    ORDER_CANCELED = 'ORDER_CANCELED'
+    PRODUCT_READY = 'PRODUCT_READY'
     STATUS_CHOICES = [
         (PAID, 'Paid'),
         (ORDER_SEND, 'Order Send'),
@@ -17,8 +17,8 @@ class Order(models.Model):
         (PRODUCT_READY, 'Product Ready'),
     ]
 
-    EAT_IN = 'EI'
-    TAKE_OUT = 'TO'
+    EAT_IN = 'EAT_IN'
+    TAKE_OUT = 'TAKE_OUT'
     TAKEOUT_CHOICES = [
         (EAT_IN, 'Eat In'),
         (TAKE_OUT, 'Take Out'),

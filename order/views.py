@@ -7,6 +7,7 @@ from user.utils import login_required
 from .models import Order, OrderProduct
 from supplier.models import Supplier
 from product.models import Product
+from user.models import User
 from datetime import datetime
 from django.db import transaction
 import json
@@ -38,19 +39,27 @@ class OrderView(View):
 
         return JsonResponse({'success': True, 'message': 'your order has been placed'},status=200)
 
-class OrderReadyView(View):
+class OrderStatusView(View):
     @login_required
     def get(self, request):
+        user = request.user
         data = Order.objects.all().values()
-        supplier = Supplier.objects.filter(id=id).values('supplier')
-
+     
         data_json = [ {
-            # 'user' : request.user,
-            'status' : d['status'],
-            'total_price' : d['total_price'],
-            # 'supplier' : 
-            'takeout' : d['takeout'],
-            'date' : d['date'],
+            '고객명' : d['user_id'],
+            '주문상태' : d['status'],
+            '주문금액' : d['total_price'],
+            '지점명' : d['supplier_id'],
+            '테이크아웃여부' : d['takeout'],
+            '주문일시' : d['date'],
         } for d in data.iterator()]
 
         return JsonResponse(data_json, safe=False)
+
+    @login_required
+    def post(self, request):
+        front_inputs = json.loads(request.body)
+
+        Order.objects.filter(pk=front_inputs['order_id']).update(status='PRODUCT_READY')
+
+        return JsonResponse({'success': True, 'message': 'your product is ready now.'},status=200)
