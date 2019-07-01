@@ -21,7 +21,7 @@ class OrderView(View):
 
         order = Order(
                 user_id = request.user.id,
-                status = front_inputs['status'],
+                status = "PAID",
                 total_price = front_inputs['total_price'],
                 supplier = Supplier.objects.get(id = front_inputs['branch_id']),
                 takeout = front_inputs['takeout_option'],
@@ -31,6 +31,9 @@ class OrderView(View):
         order.save()
 
         for product_id, product_quantity in front_inputs['orders'].items():
+            print(product_id)
+            print(product_quantity)
+
             OrderProduct(
                 order = Order.objects.get(id = order.id),
                 product = Product.objects.get(id = product_id),
@@ -59,7 +62,5 @@ class OrderStatusView(View):
     @login_required
     def post(self, request):
         front_inputs = json.loads(request.body)
-
-        Order.objects.filter(pk=front_inputs['order_id']).update(status='PRODUCT_READY')
-
+        Order.objects.filter(pk=front_inputs['order_id']).update(status=front_inputs['status'])
         return JsonResponse({'success': True, 'message': 'your product is ready now.'},status=200)

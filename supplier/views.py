@@ -6,7 +6,9 @@ from user.utils import login_required
 from user.models import User
 from django.core import serializers
 from geopy.distance import distance
-import json
+import json, boto3
+import my_settings
+
 
 class SupplierAllView(View):
     def get(self, request):
@@ -14,6 +16,7 @@ class SupplierAllView(View):
         data = Supplier.objects.all().values()
         data_json = [ {
             'name' : d['name'],
+            'supplier_id' : d['id'],
             'branch' : d['branch'],
             'address' : d['address'],
             'zipcode' : d['zipcode'],
@@ -32,12 +35,14 @@ class SupplierDetailView(View):
               
         data_json = [ {
                 'name' : d['name'],
+                'supplier_id' : d['id'],
                 'branch' : d['branch'],
                 'address' : d['address'],
                 'zipcode' : d['zipcode'],
                 'phone' : d['phone'],
                 'latitude': d['latitude'],
-                'longitude' : d['longitude']
+                'longitude' : d['longitude'],
+                'img_src' : "https://s3-siren.s3.ap-northeast-2.amazonaws.com/samsung_starbucks.jpeg"
             } for d in supplier_list
         ]
         
@@ -55,6 +60,7 @@ class SupplierLocationView(View):
         data_json = [ {
             'distance' : distance(current_coord, (d['latitude'], d['longitude'])).m,
             'name' : d['name'],
+            'supplier_id' : d['id'],
             'branch' : d['branch'],
             'address' : d['address'],
             'zipcode' : d['zipcode'],
@@ -82,3 +88,26 @@ class SupplierFavoriteView(View):
         else :
                 supplier.favorite.add(user)
                 return JsonResponse({'message':'Unfavorited'}, status=200)
+
+
+class FileView(View):
+
+    s3_client = boto3.client(
+        's3',
+        aws_access_key_id= my_settings.AWS_ACCESS_KEY_ID,
+        aws_secret_access_key= my_settings.AWS_SECRET_ACCESS_KEY
+    )
+
+    def post(self, request):
+        file = request.FILES['filename']
+
+        self.s3_client.upload_fileobj(
+            file, 
+            "s3-test-wecode",
+            file.name,
+            ExtraArgs={
+                "ContentType": file.content_type
+            }
+        )
+
+        return HttpResponse(status= 200)
