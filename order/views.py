@@ -12,8 +12,11 @@ from datetime import datetime
 from django.db import transaction
 import json
 
+
 class OrderView(View):
-    
+
+# todo 주문은 고객만 넣을수있음
+
     @transaction.atomic
     @login_required
     def post(self, request):
@@ -43,9 +46,16 @@ class OrderView(View):
         return JsonResponse({'success': True, 'message': 'your order has been placed'},status=200)
 
 class OrderStatusView(View):
+
+# todo 주문현황 리스트보기는 매장만 할수있음
+   
     @login_required
     def get(self, request):
         user = request.user
+
+        if not user.is_supplier:
+            return JsonResponse({'success': False, 'message': 'Not Allowed'},status=401)
+
         data = Order.objects.all().values()
      
         data_json = [ {
@@ -58,6 +68,9 @@ class OrderStatusView(View):
         } for d in data.iterator()]
 
         return JsonResponse(data_json, safe=False)
+
+
+# todo 스테이터스 변경은 매장만 할수있음
 
     @login_required
     def post(self, request):
