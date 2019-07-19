@@ -13,8 +13,8 @@ class OrderAdmin(admin.ModelAdmin):
         OrderProductInLine
     ]
     
-    list_display = ["date","supplier","user","status","total_price", "display_order_product","takeout"]
+    list_display = ["date","supplier","user","status", "display_order_product","takeout"]
 
-    readonly_fields = ["total_price"]
+    # readonly_fields = ["total_price"]
 
 

@@ -26,7 +26,6 @@ class Order(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=PAID)
-    total_price = models.IntegerField()
     supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE)
     takeout = models.CharField(max_length=10, choices=TAKEOUT_CHOICES)
     date = models.DateTimeField()
@@ -37,7 +36,7 @@ class Order(models.Model):
         verbose_name_plural='주문들'
     
     def __str__(self):
-        return f"{self.user} {self.total_price}"
+        return f"{self.user} {self.status}"
 
     def add_product(self, product_id, product_quantity):
         order_product = OrderProduct(
@@ -72,3 +71,7 @@ class OrderProduct(models.Model):
 
     def total_price():
         return self.price * self.quantity
+
+    def fetch_price():
+        # 주문이 발생하면 현재가격을 불러와 이력을 남긴다
+        pass
