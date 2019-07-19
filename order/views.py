@@ -33,15 +33,10 @@ class OrderView(View):
         
         order.save()
 
-        for product_id, product_quantity in front_inputs['orders'].items():
-            print(product_id)
-            print(product_quantity)
+        for product_id, product_quantity in front_inputs['orders'].items():      
 
-            OrderProduct(
-                order = Order.objects.get(id = order.id),
-                product = Product.objects.get(id = product_id),
-                quantity = product_quantity
-            ).save()
+            order.add_product(product_id, product_quantity)
+           
 
         return JsonResponse({'success': True, 'message': 'your order has been placed'},status=200)
 
@@ -53,7 +48,7 @@ class OrderStatusView(View):
     def get(self, request):
         user = request.user
 
-        if not user.is_supplier:
+        if user.is_supplier == "CUSTOMER":
             return JsonResponse({'success': False, 'message': 'Not Allowed'},status=401)
 
         data = Order.objects.all().values()
@@ -66,7 +61,7 @@ class OrderStatusView(View):
             '테이크아웃여부' : d['takeout'],
             '주문일시' : d['date'],
         } for d in data.iterator()]
-
+        
         return JsonResponse(data_json, safe=False)
 
 

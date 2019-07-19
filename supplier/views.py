@@ -13,6 +13,9 @@ import my_settings
 class SupplierAllView(View):
     def get(self, request):
 
+        import pdb; pdb.set_trace()
+
+
         data = Supplier.objects.all().values()
         data_json = [ {
             'name' : d['name'],
@@ -50,6 +53,7 @@ class SupplierDetailView(View):
 
 class SupplierLocationView(View):
     def get(self, request):
+
 
         suppliers = Supplier.objects.all().values()
         # suppliers_list = list(suppliers)

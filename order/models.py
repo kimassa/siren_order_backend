@@ -39,15 +39,36 @@ class Order(models.Model):
     def __str__(self):
         return f"{self.user} {self.total_price}"
 
+    def add_product(self, product_id, product_quantity):
+        order_product = OrderProduct(
+                order = self,
+                product = Product.objects.get(id = product_id),
+                quantity = product_quantity
+            )
+        order_product.save()
+
+    def display_order_product(self):
+        ops = []
+
+        for op in self.orderproduct_set.all():
+            ops.append(op)
+        
+        return ops
+        # return f"{self.product} {self.quantity}"
+
+
 
 class OrderProduct(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField()
-
+    price = models.IntegerField()
 
     class Meta:
         db_table='orders_products'
     
     def __str__(self):
-        return f"{self.id} {self.product} {self.quantity}"
+        return f"{self.product} {self.quantity}"
+
+    def total_price():
+        return self.price * self.quantity
