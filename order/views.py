@@ -14,7 +14,6 @@ import json
 
 
 class OrderView(View):
-    # todo 주문은 고객만 넣을수있음
 
     @transaction.atomic
     @login_required
