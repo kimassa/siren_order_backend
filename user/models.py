@@ -2,6 +2,7 @@ from django.db import models
 
 
 class User(models.Model):
+
       IS_SUPPLIER = 'SUPPLIER'
       IS_CUSTOMER = 'CUSTOMER'
       USER_CHOICES = [
@@ -20,3 +21,17 @@ class User(models.Model):
       
       def __str__(self):
           return self.name
+
+
+class UserFrequency(models.Model):
+ 
+      special_drink = models.PositiveIntegerField(max_length=5)
+      normal_drink = models.PositiveIntegerField(max_length=5)
+      user_number = models.PositiveIntegerField(max_length=30)
+      user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+      class Meta:
+          db_table='users_frequencies'
+      
+      def __str__(self):
+          return self.user.name
