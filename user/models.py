@@ -1,7 +1,8 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 
-class User(models.Model):
+class User(AbstractUser):
 
       IS_SUPPLIER = 'SUPPLIER'
       IS_CUSTOMER = 'CUSTOMER'
