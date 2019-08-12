@@ -7,25 +7,38 @@ import json, bcrypt, jwt, secrets
 from siren_order.settings import siren_secret
 from user.utils import login_required
 
+from django.contrib.auth import authenticate, login
+
 
 # 회원가입
-class UserSignUpView(View):
-    def post(self, request):
-        user_input = json.loads(request.body)
-        if User.objects.filter(email=user_input['email']).exists():
-                return JsonResponse({'success': False, 'message': 'email already exists'},status=409)
+# class UserSignUpView(View):
+#     def post(self, request):
+#         user_input = json.loads(request.body)
+#         if User.objects.filter(email=user_input['email']).exists():
+#                 return JsonResponse({'success': False, 'message': 'email already exists'},status=409)
+#
+#         else:
+#             password = bytes(user_input['password'], "utf-8")
+#             hashed_password = bcrypt.hashpw(password, bcrypt.gensalt())
+#             User(
+#                 name = user_input['name'],
+#                 email = user_input['email'],
+#                 phone = user_input['phone'],
+#                 password = hashed_password.decode("UTF-8")
+#             ).save()
+#
+#             return JsonResponse({'success': True, 'message': 'sign up success'},status=200)
 
-        else:
-            password = bytes(user_input['password'], "utf-8")
-            hashed_password = bcrypt.hashpw(password, bcrypt.gensalt())
-            User(
-                name = user_input['name'],
-                email = user_input['email'],
-                phone = user_input['phone'],
-                password = hashed_password.decode("UTF-8")
+class UserSignUpView(View):
+        def post(self, request):
+            user_input = json.loads(request.body)
+
+            User.objects.create_user(
+                    user_input['name'],
+                    user_input['email'],
+                    user_input['password'],
             ).save()
 
-            return JsonResponse({'success': True, 'message': 'sign up success'},status=200)
 
 # 로그인
 class UserSignInView(View):
@@ -46,6 +59,26 @@ class UserSignInView(View):
                 return JsonResponse({'success': False, 'message':'invalid password'},status=401)
         else:
             return JsonResponse({'success': False, 'message': 'email does not exist'},status=401)
+
+
+
+def new_login(request):
+
+    user_input = json.loads(request.body)
+
+    username = user_input['username']
+    password = user_input['password']
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        login(request, user)
+
+        return JsonResponse({'success': False, 'message': 'LOGIN SUCESS'}, status=200)
+
+    else:
+        pass
+
+
+
 
 class UserFrequencyView(View):
   
@@ -73,3 +106,4 @@ class UserFrequencyView(View):
         input_special = user_input["normal_drink"]
 
         return JsonResponse(user_frequency, safe=False)
+
