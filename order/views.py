@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from rest_framework.views import APIView
 from .models import Order, OrderProduct
 from django.http import JsonResponse, HttpResponse
 from django.views import View
@@ -10,6 +11,7 @@ from product.models import Product
 from user.models import User
 from datetime import datetime
 from django.db import transaction
+from rest_framework.permissions import IsAuthenticated
 import json
 
 
@@ -20,7 +22,6 @@ class OrderView(View):
     def post(self, request):
 
         front_inputs = json.loads(request.body)
-        print(front_inputs)
         order = Order(
             user_id=request.user.id,
             status="PAID",
@@ -29,19 +30,18 @@ class OrderView(View):
             date=datetime.now()
         )
         order.save()
-        print(front_inputs)
 
-        
+
         for product_id, product_quantity in front_inputs['orders'].items():
             order.add_product(product_id, product_quantity)
 
         return JsonResponse({'success': True, 'message': 'your order has been placed'}, status=200)
 
 
-class OrderStatusView(View):
+class OrderStatusView(APIView):
     # todo 주문현황 리스트보기는 매장만 할수있음
+    permission_classes = [IsAuthenticated]
 
-    @login_required
     def get(self, request):
         user = request.user
 

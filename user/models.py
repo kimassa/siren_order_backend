@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-
 class User(AbstractUser):
 
       IS_SUPPLIER = 'SUPPLIER'
@@ -11,17 +10,20 @@ class User(AbstractUser):
         (IS_CUSTOMER, 'CUSTOMER'),
       ]
 
-      name = models.CharField(max_length=100)
-      email = models.CharField(max_length=100)
-      phone = models.CharField(max_length=40)
-      password = models.CharField(max_length=200)
+      nickname = models.CharField(max_length=100,blank=True)
+      name = models.CharField(max_length=100,blank=True)
+      phone = models.CharField(max_length=40,blank=True)
       is_supplier = models.CharField(max_length=20, choices=USER_CHOICES)
 
       class Meta:
           db_table='users'
       
       def __str__(self):
-          return self.name
+          return self.username
+
+      def save(self, *args, **kwargs):
+          self.email = self.username
+          super(User, self).save(*args, **kwargs)
 
 
 class UserFrequency(models.Model):

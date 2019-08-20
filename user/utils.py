@@ -6,7 +6,9 @@ from siren_order.settings import siren_secret
 
 def login_required(f):        
     def wrapper(self, request, *args, **kwargs):
+
         access_token = request.headers.get('Authorization', None)
+
         try:                   
             if access_token:
                 decoded = jwt.decode(access_token, siren_secret, algorithms=['HS256'])
