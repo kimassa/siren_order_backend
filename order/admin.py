@@ -60,3 +60,11 @@ class OrderAdmin(admin.ModelAdmin):
         Order.objects.filter(id=kwargs["order_id"]).update(status='PAID')
         return super(OrderAdmin, self).changelist_view(request)
 
+
+    def get_queryset(self, request):
+        qs = super(OrderAdmin, self).get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+
+        supplier = request.user.manager.first()
+        return qs.filter(supplier=supplier)
