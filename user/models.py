@@ -3,17 +3,9 @@ from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
 
-      IS_SUPPLIER = 'SUPPLIER'
-      IS_CUSTOMER = 'CUSTOMER'
-      USER_CHOICES = [
-        (IS_SUPPLIER, 'SUPPLIER'),
-        (IS_CUSTOMER, 'CUSTOMER'),
-      ]
-
       nickname = models.CharField(max_length=100,blank=True)
       name = models.CharField(max_length=100,blank=True)
       phone = models.CharField(max_length=40,blank=True)
-      is_supplier = models.CharField(max_length=20, choices=USER_CHOICES)
 
       class Meta:
           db_table='users'
