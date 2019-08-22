@@ -41,13 +41,21 @@ INSTALLED_APPS = [
     # 'debug_toolbar'
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_auth.registration',
+    'rest_auth',
     'django_extensions',
     'shell_plus',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+
     'supplier',
     'user',
     'product',
     'order',
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -139,6 +147,7 @@ USE_L10N = True
 
 USE_TZ = True
 
+ACCOUNT_EMAIL_VERIFICATION = 'none'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/

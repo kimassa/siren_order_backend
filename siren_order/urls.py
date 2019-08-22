@@ -9,4 +9,6 @@ urlpatterns = [
     path('user', include('user.urls')),
     path('order', include('order.urls')),
     path('admin/', admin.site.urls),
+    path('rest-auth/', include('rest_auth.urls')),
+    path('rest-auth/registration/', include('rest_auth.registration.urls'))
 ]

@@ -21,9 +21,9 @@ class User(AbstractUser):
       def __str__(self):
           return self.username
 
-      def save(self, *args, **kwargs):
-          self.email = self.username
-          super(User, self).save(*args, **kwargs)
+      # def save(self, *args, **kwargs):
+      #     self.email = self.username
+      #     super(User, self).save(*args, **kwargs)
 
 
 class UserFrequency(models.Model):
