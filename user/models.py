@@ -13,6 +13,8 @@ class User(AbstractUser):
       def __str__(self):
           return self.username
 
+      # 부모의 함수를 override해서 재정의하기!! 다시보기
+
       # def save(self, *args, **kwargs):
       #     self.email = self.username
       #     super(User, self).save(*args, **kwargs)

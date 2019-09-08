@@ -63,8 +63,21 @@ class OrderAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         qs = super(OrderAdmin, self).get_queryset(request)
+
         if request.user.is_superuser:
             return qs
 
-        supplier = request.user.manager.first()
-        return qs.filter(supplier=supplier)
+        # import ipdb;
+        # ipdb.set_trace();
+
+        # if request.user.owner.exists():
+        #     supplier = request.user.owner.all()
+        #     return qs.filter(supplier__in=supplier)
+        #
+        # if request.user.manager.exists():
+        #     supplier = request.user.manager.all()
+        #     return qs.filter(supplier__in=supplier)
+
+
+        return qs.filter(supplier__in=request.user.owner.all()|request.user.manager.all())
+
