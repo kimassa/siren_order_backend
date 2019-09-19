@@ -8,6 +8,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 /csv
+.vscode
 
 # Byte-compiled / optimized / DLL files
 __pycache__
