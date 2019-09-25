@@ -1,13 +1,13 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse, HttpResponse
-from django.views import View
+from rest_framework.views import APIView
 from .models import Product
 from user.models import User
 from django.core import serializers
 from user.utils import login_required
 import json
 
-class ProductAllView(View):
+class ProductAllView(APIView):
     
     def get(self, request):
         data = Product.objects.all().values()
@@ -23,7 +23,7 @@ class ProductAllView(View):
 
         return JsonResponse(data_json, safe=False)
 
-class ProductFavoriteView(View):
+class ProductFavoriteView(APIView):
 
     @login_required
     def post(self, request, pk):
@@ -39,7 +39,7 @@ class ProductFavoriteView(View):
                 return JsonResponse({'message':'Unfavorited'}, status=200)
 
 
-class ProductCreateView(View):
+class ProductCreateView(APIView):
 
     @login_required
     def post(self, request):
@@ -104,7 +104,7 @@ class ProductCreateView(View):
             )
             new_image.save()
 
-class ProductDeleteView(View):
+class ProductDeleteView(APIView):
     
     @login_required
     def post(self, request):

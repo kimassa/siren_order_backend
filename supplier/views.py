@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse, HttpResponse
-from django.views import View
+from rest_framework.views import APIView
 from .models import Supplier
 from user.utils import login_required
 from user.models import User
@@ -10,7 +10,7 @@ from geopy.distance import distance
 import my_settings
 
 
-class SupplierAllView(View):
+class SupplierAllView(APIView):
     def get(self, request):
 
 
@@ -28,7 +28,7 @@ class SupplierAllView(View):
         
         return JsonResponse(data_json, safe=False)
 
-class SupplierDetailView(View):
+class SupplierDetailView(APIView):
     def get(self, request, pk):
 
         supplier = Supplier.objects.filter(id=pk)
@@ -49,7 +49,7 @@ class SupplierDetailView(View):
         
         return JsonResponse(data_json, safe=False)            
 
-class SupplierLocationView(View):
+class SupplierLocationView(APIView):
     def get(self, request):
 
 
@@ -76,7 +76,7 @@ class SupplierLocationView(View):
         
         return JsonResponse(first_ten_list, safe=False)
 
-class SupplierFavoriteView(View):
+class SupplierFavoriteView(APIView):
 
     @login_required
     def post(self, request, pk):
@@ -92,7 +92,7 @@ class SupplierFavoriteView(View):
                 return JsonResponse({'message':'Unfavorited'}, status=200)
 
 
-# class FileView(View):
+# class FileView(APIView):
 #
 #     s3_client = boto3.client(
 #         's3',

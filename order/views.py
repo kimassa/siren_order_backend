@@ -15,13 +15,16 @@ from rest_framework.permissions import IsAuthenticated
 import json
 
 
-class OrderView(View):
+class OrderView(APIView):
 
     @transaction.atomic
-    @login_required
+
+    # @login_required
+
     def post(self, request):
 
         front_inputs = json.loads(request.body)
+
         order = Order(
             user_id=request.user.id,
             status="PAID",
@@ -29,11 +32,13 @@ class OrderView(View):
             takeout=front_inputs['takeout_option'],
             date=datetime.now()
         )
+
         order.save()
 
-
-        for product_id, product_quantity in front_inputs['orders'].items():
-            order.add_product(product_id, product_quantity)
+        for ele in front_inputs['orders']:
+            for ele2 in ele.items():
+                product_id, product_quantity = ele2
+                order.add_product(product_id, product_quantity)
 
         return JsonResponse({'success': True, 'message': 'your order has been placed'}, status=200)
 

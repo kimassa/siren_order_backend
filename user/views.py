@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from django.views import View
+from rest_framework.views import APIView
 
 from rest_framework import viewsets
 from .models import UserFrequency
@@ -44,7 +44,7 @@ class ProfileViewSet(viewsets.ViewSet):
 
 
 
-class UserFrequencyView(View):
+class UserFrequencyView(APIView):
   
     def get(self, request, pk):
         user_frequency = UserFrequency.objects.filter(user_id=pk).values()
