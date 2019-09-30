@@ -88,7 +88,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'siren_order.wsgi.application'
 
-
+APPEND_SLASH = False
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 

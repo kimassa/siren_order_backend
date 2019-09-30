@@ -13,7 +13,6 @@ import my_settings
 class SupplierAllView(APIView):
     def get(self, request):
 
-
         data = Supplier.objects.all().values()
         data_json = [ {
             'name' : d['name'],

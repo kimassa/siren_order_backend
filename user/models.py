@@ -22,10 +22,11 @@ class User(AbstractUser):
 
 class UserFrequency(models.Model):
  
-      special_drink = models.PositiveIntegerField(max_length=5)
-      normal_drink = models.PositiveIntegerField(max_length=5)
-      user_number = models.PositiveIntegerField(max_length=30)
+      special_drink = models.PositiveIntegerField()
+      normal_drink = models.PositiveIntegerField()
+      user_number = models.PositiveIntegerField()
       user = models.OneToOneField(User, on_delete=models.CASCADE)
+
 
       class Meta:
           db_table='users_frequencies'

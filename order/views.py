@@ -18,7 +18,6 @@ import json
 class OrderView(APIView):
 
     @transaction.atomic
-
     # @login_required
 
     def post(self, request):
