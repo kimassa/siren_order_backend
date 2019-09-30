@@ -19,6 +19,7 @@ class ProductAllView(APIView):
             'drink_type' : d['drink_type'],
             'drink_size' : d['drink_size'],
             'price' : d['price'],
+            'image': d['image'],
         } for d in data.iterator()]
 
         return JsonResponse(data_json, safe=False)

@@ -1,5 +1,7 @@
 from django.db import models
 from user.models import User
+from versatileimagefield.fields import VersatileImageField
+
 
 
 class Product(models.Model):
@@ -37,6 +39,11 @@ class Product(models.Model):
       price = models.CharField(max_length=50)
       detail = models.CharField(max_length=100, null=True, blank=True)
       favorite = models.ManyToManyField(User, related_name='Product_favorite', blank=True)
+      image = VersatileImageField(
+          'Image',
+          upload_to='images/product/',
+          null=True, blank=True
+      )
 
       class Meta:
           db_table='products'
