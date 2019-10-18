@@ -2,53 +2,21 @@ from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse, HttpResponse
 from rest_framework.views import APIView
 from .models import Product
+from .serializers import ProductSerializer
 from user.models import User
-from django.core import serializers
 from user.utils import login_required
 import json
+
 
 class ProductAllView(APIView):
     
     def get(self, request):
 
         data = Product.objects.all()
+        serializer = ProductSerializer(data, many=True)
 
+        return JsonResponse(serializer.data, safe=False)
 
-        # data_json = [{
-        #     'name' : d['name'],
-        #     'menu_type' : d['menu_type'],
-        #     'menu_category' : d['menu_category'],
-        #     'drink_type' : d['drink_type'],
-        #     'drink_size' : d['drink_size'],
-        #     'price' : d['price'],
-        #     'image': d['image'],
-        # } for d in data.iterator()]
-
-        data_json = []
-
-
-        for product in Product.objects.all():
-
-            # import ipdb; ipdb.set_trace()
-
-            if product.image.name is None:
-                image_url = ""
-            else:
-                image_url = product.image.url
-
-            data_json.append(
-                {
-                    'name': product.name,
-                    'menu_type': product.menu_type,
-                    'menu_category': product.menu_category,
-                    'drink_type': product.drink_type,
-                    'drink_size': product.drink_size,
-                    'price': product.price,
-                    'image': image_url
-                }
-            )
-
-        return JsonResponse(data_json, safe=False)
 
 class ProductFavoriteView(APIView):
 
@@ -130,6 +98,7 @@ class ProductCreateView(APIView):
                 status = True
             )
             new_image.save()
+
 
 class ProductDeleteView(APIView):
     
