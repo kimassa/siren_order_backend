@@ -4,28 +4,27 @@ from rest_framework.views import APIView
 from .models import Supplier
 from user.utils import login_required
 from user.models import User
-from django.core import serializers
+from .serializers import SupplierSerializer
 from geopy.distance import distance
-# import json, boto3
-import my_settings
+from rest_framework import viewsets
 
 
-class SupplierAllView(APIView):
-    def get(self, request):
+class SupplierAllView(viewsets.ViewSet):
 
-        data = Supplier.objects.all().values()
-        data_json = [ {
-            'name' : d['name'],
-            'supplier_id' : d['id'],
-            'branch' : d['branch'],
-            'address' : d['address'],
-            'zipcode' : d['zipcode'],
-            'phone' : d['phone'],
-            'latitude': d['latitude'],
-            'longitude' : d['longitude']
-        } for d in data.iterator() ]
-        
-        return JsonResponse(data_json, safe=False)
+    def list(self, request):
+
+        data = Supplier.objects.all()
+        serializer = SupplierSerializer(data, many=True)
+
+        return JsonResponse(serializer.data, safe=False)
+
+    def retrieve(self, request, pk=None):
+
+        data = Supplier.objects.get(id=pk)
+        serializer = SupplierSerializer(data)
+
+        return JsonResponse(serializer.data, safe=False)
+
 
 class SupplierDetailView(APIView):
     def get(self, request, pk):
@@ -48,9 +47,9 @@ class SupplierDetailView(APIView):
         
         return JsonResponse(data_json, safe=False)            
 
+
 class SupplierLocationView(APIView):
     def get(self, request):
-
 
         suppliers = Supplier.objects.all().values()
         # suppliers_list = list(suppliers)
