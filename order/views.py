@@ -39,6 +39,8 @@ class OrderView(APIView):
                 product_id, product_quantity = ele2
                 order.add_product(product_id, product_quantity)
 
+        order.send_notification()
+
         return JsonResponse({'success': True, 'message': 'your order has been placed'}, status=200)
 
 

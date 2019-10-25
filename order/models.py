@@ -2,7 +2,9 @@ from django.db import models
 from user.models import User
 from supplier.models import Supplier
 from product.models import Product
-
+from django.http import JsonResponse, HttpResponse
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 class Order(models.Model):
     PAID = 'PAID'
@@ -59,7 +61,6 @@ class Order(models.Model):
             total_price += int(ordered_product.price)
 
         return total_price
-   
 
     def display_order_product(self):
         products_list = []
@@ -68,6 +69,24 @@ class Order(models.Model):
             products_list.append(ordered_product)
 
         return products_list
+
+    def send_notification(self):
+        # print(self.user, self.supplier, self.date, self.orderproduct_set.all())
+        data_json = {
+            self.user,
+            self.supplier,
+            self.date,
+            self.orderproduct_set.all()
+        }
+        return JsonResponse(data_json, status=200)
+
+
+
+
+# @receiver(post_save, sender=Order)
+# def order_post_save(sender, **kwargs):
+#     import ipdb; ipdb.set_trace();
+#     pass
 
 
 class OrderProduct(models.Model):
