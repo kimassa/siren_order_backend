@@ -11,7 +11,13 @@ class ProductAllView(APIView):
     
     def get(self, request):
 
-        data = Product.objects.all()
+        supplier_id = request.query_params.get("supplier_id")
+
+        if supplier_id:
+            data = Product.objects.filter(supplier_product=supplier_id)
+        else:
+            data = Product.objects.all()
+
         serializer = ProductSerializer(data, many=True)
 
         return JsonResponse(serializer.data, safe=False)

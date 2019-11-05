@@ -5,4 +5,6 @@ from .models import Supplier
 @admin.register(Supplier)
 class SupplierAdmin(admin.ModelAdmin):
     search_fields = ["branch"]
-    list_display = ["branch","owner","manager"]
+    list_display = ["branch","owner","manager", "products_count"]
+
+

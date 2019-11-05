@@ -19,29 +19,38 @@ class OrderView(APIView):
 
     @transaction.atomic
     # @login_required
-
     def post(self, request):
+        # branch_id가 없는경우
+        try:
+            front_inputs = json.loads(request.body)
 
-        front_inputs = json.loads(request.body)
+            order = Order(
+                user_id=request.user.id,
+                status="PAID",
+                supplier=Supplier.objects.get(id=front_inputs['branch_id']),
+                takeout=front_inputs['takeout_option'],
+                date=datetime.now()
+            )
 
-        order = Order(
-            user_id=request.user.id,
-            status="PAID",
-            supplier=Supplier.objects.get(id=front_inputs['branch_id']),
-            takeout=front_inputs['takeout_option'],
-            date=datetime.now()
-        )
+            order.save()
+        except Supplier.DoesNotExist:
+            return JsonResponse({"message":"no supplier"}, status=404)
 
-        order.save()
+        except ValueError:
+            return JsonResponse({"message": "integer number please"}, status=400)
 
         for ele in front_inputs['orders']:
             for ele2 in ele.items():
                 product_id, product_quantity = ele2
                 order.add_product(product_id, product_quantity)
 
-        order.send_notification()
+        try:
+            order.send_notification()
 
-        return JsonResponse({'success': True, 'message': 'your order has been placed'}, status=200)
+        except Exception as e:
+            print(e)
+
+        return JsonResponse(order.body(), status=200)
 
 
 class OrderStatusView(APIView):

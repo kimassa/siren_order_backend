@@ -71,14 +71,17 @@ class Order(models.Model):
         return products_list
 
     def send_notification(self):
-        # print(self.user, self.supplier, self.date, self.orderproduct_set.all())
+        return True
+
+    def body(self):
+
         data_json = {
             self.user,
             self.supplier,
             self.date,
             self.orderproduct_set.all()
         }
-        return JsonResponse(data_json, status=200)
+        return data_json
 
 
 
