@@ -17,7 +17,7 @@ django-debug-toolbar==1.11
 django-extensions==2.1.9
 django-rest-auth==0.9.5
 django-shell-plus==1.1.7
-djangorestframework==3.10.2
+djangorestframework==3.11.2
 docutils==0.14
 geographiclib==1.49
 geopy==1.20.0
