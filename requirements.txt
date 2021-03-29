@@ -38,7 +38,7 @@ protobuf==3.7.1
 ptyprocess==0.6.0
 pycosat==0.6.3
 pycparser==2.19
-Pygments==2.4.2
+Pygments==2.7.4
 PyJWT==1.7.1
 pyOpenSSL==19.0.0
 PySocks==1.6.8
